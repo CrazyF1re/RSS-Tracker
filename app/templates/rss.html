@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSS List</title>
+    <style>
+        .element{
+            width: auto;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            font-size: 25px;
+            position: relative;
+            border-bottom: 1px solid ;
+            border-bottom: 10px;
+            
+        } 
+        .element::after{
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 30%; /* Начало границы (20% от ширины родителя) */
+            width: 40%; /* Длина границы (60% от ширины родителя) */
+            border-bottom: 1px solid black;
+            
+        }
+        .last_element{
+            width: auto;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            font-size: 25px;
+            position: relative;
+        }
+        .list{
+            text-align: center;
+            list-style-type: none;
+            width:50%;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid black;
+            border-radius: 15px;
+            padding: 0;
+        }
+        .add_source{
+            width:100px;
+            height: 25px;
+            margin:10px;
+            align-items: center;
+            font-size: 16px;
+            border:1px solid black;
+            border-radius: 5px;
+        }
+        .delete_source{
+            width:240px;
+            height: 50px;
+            margin:10px;
+            align-items: center;
+            font-size: 20px;
+            border:1px solid black;
+            border-radius: 10px;
+        }
+        .rss{
+            display:block;
+            min-width: 400px;
+            max-width: min-content;
+            height: 20px;
+            font-size: 16px;
+        }
+    </style>
+    <script>
+        function add_source(){
+            url = document.querySelector("input[class='rss']").value
+            if (url != ''){
+            fetch("", {
+            method: 'PUT',
+            body: JSON.stringify({
+            url: url
+                }),
+            headers: {
+            'Content-Type': 'application/json',
+                },
+            }).then(()=>{location.reload();})
+            document.querySelector("input[class='rss']").value = ''
+        }
+        }
+        function del_source(){
+            lst = []
+            document.querySelectorAll("input[type='checkbox']").forEach((elem) => {
+            if (elem.checked){
+                p  = elem.nextElementSibling.innerHTML
+                console.log(p)    
+                lst.push(p)
+            }
+            })
+
+            if (lst.length != 0){
+            fetch("", {
+            method: 'DELETE',
+            body: JSON.stringify({
+            list: lst
+                }),
+            headers: {
+            'Content-Type': 'application/json',
+                },
+            }).then(()=>{location.reload();})
+            document.querySelector("input[class='rss']").value = ''
+        }
+        }
+    </script>
+</head>
+<body>
+    <ul class="list">
+        {% for link in list -%}
+            <li class="element">
+                <input type="checkbox" id = {{link.id}}>
+                <span>{{link.rss}}</span>
+            </li>
+        {% endfor -%}
+        <li class="element" style="height:80px;">
+            <button class="delete_source" onclick="del_source()">Delete choosen sources</button>
+        </li>
+        <li class="last_element">
+            <input type="text" class="rss">
+            <button class="add_source" onclick="add_source()">Add RSS</button>
+        </li>
+
+    </ul>
+    
+</body>
+</html>
