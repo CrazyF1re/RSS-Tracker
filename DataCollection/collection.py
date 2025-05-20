@@ -16,6 +16,14 @@ class Database:
             url text NOT NULL
         );""")
 
+        self.cur.execute("""CREATE TABLE IF NOT EXISTS rss(
+            url text NOT NULL UNIQUE
+                         )""")
+        tmp = [(i,) for i in RSS]
+        print(tmp)
+        self.con.executemany("""insert or ignore into rss(url) values(?)""", [(i,) for i in RSS])
+        self.con.commit()
+
     def get_news(self):
         lst = []
         for blog in RSS:
