@@ -1,8 +1,13 @@
 from fastapi import FastAPI
 from typing import Union
+from fastapi.templating import Jinja2Templates
+from .routers import keywords, news, rss
 
 app = FastAPI()
 
+
+
+app.include_router(rss.router)
 
 @app.get("/")
 def read_root():
