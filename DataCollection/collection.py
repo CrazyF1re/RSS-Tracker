@@ -104,19 +104,14 @@ class Database:
 
     def get_news_list(self):
         keywords_list = [i[0] for i in self.get_keywords_list()]
-        print(keywords_list)
         news_list = self.__cur.execute("""SELECT * from news""").fetchall()
         str_news =[str(i[0] + "||") for i in news_list]
         m = Mystem()
         counter = 0
         list_of_numbers = []
-        # print(m.lemmatize(''.join(str_news)))
-        # print(news_list)
         for i in m.lemmatize(''.join(str_news)):
             if "||" in i:
                 counter +=1
-            if counter < 30:
-                print(news_list[counter][0],i)
             if i.capitalize() in keywords_list:
                 list_of_numbers.append(counter)
         res = []
