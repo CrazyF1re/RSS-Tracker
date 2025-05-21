@@ -316,6 +316,18 @@ wheels = [
 ]
 
 [[package]]
+name = "pymystem3"
+version = "0.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "requests" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/4e/c2/56486b7eb180d83363baa2e609fcc2d49280331ad67e348cf8fa456050bf/pymystem3-0.2.0.tar.gz", hash = "sha256:1aaed6a15451cc73f5750bcda77559e681215e1e391b35dd4325bd132a3afb95", size = 21559 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/00/8c/98b43c5822620458704e187a1666616c1e21a846ede8ffda493aabe11207/pymystem3-0.2.0-py3-none-any.whl", hash = "sha256:0bfdb0c2c57157f413c85f3e5f54a41f294880c3d6e8028066e71598ee6b52aa", size = 10916 },
+]
+
+[[package]]
 name = "python-dotenv"
 version = "1.1.0"
 source = { registry = "https://pypi.org/simple" }
@@ -398,6 +410,7 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "fastapi", extra = ["standard"] },
+    { name = "pymystem3" },
     { name = "python-dotenv" },
     { name = "requests" },
 ]
@@ -405,6 +418,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "fastapi", extras = ["standard"] },
+    { name = "pymystem3" },
     { name = "python-dotenv" },
     { name = "requests" },
 ]
