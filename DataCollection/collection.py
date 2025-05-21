@@ -3,6 +3,7 @@ import sqlite3
 import requests
 import os
 import json
+from pymystem3 import Mystem
 import xml.etree.ElementTree as ET
 from dotenv import load_dotenv
 
@@ -100,3 +101,26 @@ class Database:
     def del_keywords(self, keywords:list):
         self.__cur.executemany("""DELETE FROM keywords where word = ?""",[(i,) for i in keywords])
         self.__con.commit()
+
+    def get_news_list(self):
+        keywords_list = [i[0] for i in self.get_keywords_list()]
+        print(keywords_list)
+        news_list = self.__cur.execute("""SELECT * from news""").fetchall()
+        str_news =[str(i[0] + "||") for i in news_list]
+        m = Mystem()
+        counter = 0
+        list_of_numbers = []
+        # print(m.lemmatize(''.join(str_news)))
+        # print(news_list)
+        for i in m.lemmatize(''.join(str_news)):
+            if "||" in i:
+                counter +=1
+            if counter < 30:
+                print(news_list[counter][0],i)
+            if i.capitalize() in keywords_list:
+                list_of_numbers.append(counter)
+        res = []
+        for i in list_of_numbers:
+            res.append(news_list[i])
+        return res
+        
