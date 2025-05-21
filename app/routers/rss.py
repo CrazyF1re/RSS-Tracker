@@ -1,9 +1,9 @@
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.templating import Jinja2Templates
 from fastapi import Depends
-import sqlite3
 from ..dependencies import get_session
 from pydantic import BaseModel
+from DataCollection.collection import Database
 
 class Item(BaseModel):
     url:str
@@ -18,23 +18,19 @@ router =  APIRouter(
 templates = Jinja2Templates(directory="./app/templates")
 
 @router.get("")
-def get_rss_list(request:Request, session:sqlite3.Connection = Depends(get_session)):
-    list = session.cursor().execute("""SELECT * from rss""").fetchall()
+def get_rss_list(request:Request, session:Database = Depends(get_session)):
+    list = session.get_rss_list()
     list = [{"id":list.index(i),"rss":i[0]} for i in list]
     return templates.TemplateResponse(request=request, name="rss.html", context={"list":list})
 
 @router.put("")
-def add_rss(item: Item, session:sqlite3.Connection = Depends(get_session)):
-
+def add_rss(item: Item, session:Database = Depends(get_session)):
+    session.add_rss(item.url)
     
-    session.cursor().execute("""INSERT OR IGNORE INTO rss values(?)""",(item.url,))
-    session.commit()
-    return {"This is response to put request":"",**item.model_dump()}
-    
-
 @router.delete("")
-def delete_choosen_rss(list:ListItem,session:sqlite3.Connection = Depends(get_session)):
-    session.cursor().executemany("""DELETE FROM rss WHERE url = ?""", [(i,) for i in list.list])
-    session.commit()
-    
-    return {"This is response to delete request":"","lst":list}
+def delete_choosen_rss(list:ListItem,session:Database = Depends(get_session)):
+    session.del_rss(list.list)
+
+@router.post("")
+def setup_default_rss(session:Database = Depends(get_session)):
+    session.setup_default_rss()
