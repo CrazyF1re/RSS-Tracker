@@ -1,10 +1,17 @@
 import sqlite3
-from config import DB_NAME
+import os
+from DataCollection.collection import Database
 
 def get_session():
-    db = sqlite3.connect(DB_NAME)
+    db = Database()
     try:
         yield db
     except:
         raise
-        db.close()
+
+
+def put_data():
+    pass
+
+def del_data():
+    pass
