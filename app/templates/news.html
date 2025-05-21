@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News List</title>
+    <style>
+        body{
+            background-color: #009D91;
+        }
+        .element{
+            width: 90%;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 5px;
+            margin-bottom: 20px;
+            font-size: 25px;
+            position: relative;
+            border-bottom: 1px solid ;
+            border-bottom: 10px;
+            flex-direction: column;
+            background-color: #3F92D2;
+            border-radius: 20px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .list{
+            text-align: center;
+            list-style-type: none;
+            width:50%;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid black;
+            border-radius: 15px;
+            padding: 0;
+            background-color: #FFAD40;
+            
+        }
+        .link_rss, .link_news{
+            font-size: 20px;
+            background-color:cornsilk;
+            border-radius: 10px;
+            padding: 7px;
+        }
+        .link_news{
+            margin-left: 10px;
+        }
+        .keywords{
+            width: 400px;
+            flex-wrap: wrap;
+            margin: auto;
+            display: flex;
+            grid-template-columns: repeat(3, 1fr);
+            justify-items: center;
+            justify-content: center;
+            flex-direction: row;
+            align-items: center;
+            list-style-type: none;
+            font-size: 16px;
+        }
+        .main_li{
+            width: 200px;
+            height: 30px;
+            align-items: center;
+            text-align: center;
+            background-color:burlywood;
+            display: flex;
+            justify-content: center;
+            margin:30px;
+            border-radius:15px;
+            font-size: 20px;
+            padding: 5px;
+            
+        }
+        a{
+            text-decoration: none;
+        }
+        .links{
+            margin: auto;
+            display: flex;
+            grid-template-columns: repeat(3, 1fr);
+            justify-items: center;
+            justify-content: center;
+            flex-direction: row;
+            align-items: center;
+            list-style-type: none;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <ul class="links">
+        <li>
+            <a href="/news" class="main_li">Новости</a>
+        </li>
+        <li>
+            <a href="/rss" class="main_li">RSS источники</a>
+        </li>
+        <li>
+            <a href="/keywords" class="main_li">Ключевые слова</a>
+        </li>
+    </ul>
+    <h1 style="display:flex;margin:auto;justify-content:center;">List of News</h1>
+    <ul class="keywords">
+        {% for word in keywords -%}
+            <li style="font-size: 20px; border: 1px solid black; padding:5px;margin:10px; border-radius: 5px;">
+                <span>{{word[0]}}</span>
+            </li>
+        {% endfor -%}
+        </ul>
+    <ul class="list">        
+        {% for news in list -%}
+            <li class="element">
+                <span>{{news.title}}</span>
+                <div style="display: flex;flex-direction:row;margin-top:15px">
+                    <a href="{{news.magazin}}" class="link_rss">Перейти в источник</a>
+                    <a href="{{news.url}}" class="link_news">Перейти к статье</a>
+                </div>
+                
+            </li>
+        {% endfor -%}
+    </ul>
+</body>
+</html>
