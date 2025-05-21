@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RSS List</title>
+    <title>Keywords List</title>
     <style>
         .element{
             width: auto;
@@ -49,15 +49,15 @@
             border-radius: 15px;
             padding: 0;
         }
-        .add_source{
+        .add_keyword{
             width:100px;
-            height: 25px;
+            height: 50px;
             margin:10px;
             align-items: center;
             font-size: 16px;
             
         }
-        .delete_source{
+        .delete_keyword{
             width:240px;
             height: 50px;
             margin:10px;
@@ -65,14 +65,14 @@
             font-size: 20px;
             
         }
-        .rss{
+        .keywords{
             display:block;
             min-width: 400px;
             max-width: min-content;
             height: 20px;
             font-size: 16px;
         }
-        .default_rss{
+        .default_keyword{
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -100,13 +100,13 @@
         }
     </style>
     <script>
-        function add_source(){
-            url = document.querySelector("input[class='rss']").value
-            if (url != ''){
+        function add_keyword(){
+            list = document.querySelector("input[class='keywords']").value.split(",")
+            if (list.length){
             fetch("", {
             method: 'PUT',
             body: JSON.stringify({
-            url: url
+            list:list
                 }),
             headers: {
             'Content-Type': 'application/json',
@@ -114,7 +114,7 @@
             }).then(()=>{location.reload();})
         }
         }
-        function del_source(){
+        function del_keyword(){
             lst = []
             document.querySelectorAll("input[type='checkbox']").forEach((elem) => {
             if (elem.checked){
@@ -123,7 +123,6 @@
                 lst.push(p)
             }
             })
-
             if (lst.length != 0){
             fetch("", {
             method: 'DELETE',
@@ -136,7 +135,7 @@
             }).then(()=>{location.reload();})
         }
         }
-        function setup_default_rss(){
+        function setup_default_keyword(){
 
             document.querySelector("div[class='loader']").style.display = "flex"
             fetch("", {
@@ -149,7 +148,7 @@
     </script>
 </head>
 <body>
-    <h1 style="display:flex;margin:auto;justify-content:center;">List of RSS</h1>
+    <h1 style="display:flex;margin:auto;justify-content:center;">List of Keywords</h1>
     <ul class="list">
         {% for link in list -%}
             <li class="element">
@@ -158,15 +157,15 @@
             </li>
         {% endfor -%}
         <li class="element" style="height:80px;">
-            <button class="delete_source" onclick="del_source()">Delete choosen sources</button>
+            <button class="delete_keyword" onclick="del_keyword()">Delete choosen keywords</button>
         </li>
         <li class="last_element">
-            <input type="text" class="rss">
-            <button class="add_source" onclick="add_source()">Add RSS</button>
+            <input type="text" class="keywords" placeholder = "You can enter multiple keywords separated with ','">
+            <button class="add_keyword" onclick="add_keyword()">Add keyword</button>
         </li>
 
     </ul>
-    <button class="default_rss" onclick="setup_default_rss()">Set Up default rss from config</button>
+    <button class="default_keyword" onclick="setup_default_keyword()">Set Up default Keywords from config</button>
     <div class="loader"></div>
 </body>
 </html>
