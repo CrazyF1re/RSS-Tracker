@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, Request
 from fastapi.templating import Jinja2Templates
 from fastapi import Depends
 from ..dependencies import get_session
